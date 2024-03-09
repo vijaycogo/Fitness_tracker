@@ -2,6 +2,13 @@
 from typing import List, Optional
 from pydantic import BaseModel
 
+class ActivityBase(BaseModel):
+    name: str
+    description:str
+
+class Activity(ActivityBase):
+    class Config():
+        orm_mode = True
 
 
 class UserResponse(BaseModel):
@@ -19,29 +26,18 @@ class User(BaseModel):
     password:str
 
 class ShowUser(BaseModel):
+    id:int
     name:str
     email:str
-    # blogs : List[Blog] =[]
+    activities : List[Activity] =[]
     class Config():
         orm_mode = True
 
 
 
-
-class BlogBase(BaseModel):
-    title: str
-    body: str
-
-class Blog(BlogBase):
-    class Config():
-        orm_mode = True
-
-
-
-
-class ShowBlog(BaseModel):
-    title: str
-    body:str
+class ShowActivity(BaseModel):
+    name: str
+    description:str
     creator: ShowUser
 
     class Config():
