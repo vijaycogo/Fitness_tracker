@@ -12,6 +12,16 @@ Base = declarative_base()
 # Create tables in the database
 Base.metadata.create_all(bind=engine)
 
-if __name__ == "__main__":
-    import uvicorn
-    uvicorn.run("app.main:app", reload=True)
+# if __name__ == "__main__":
+#     import uvicorn
+#     uvicorn.run("app.main:app", reload=True)
+
+
+
+
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()

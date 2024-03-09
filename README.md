@@ -38,3 +38,9 @@ The server will start running at `http://localhost:8000`. You can access the int
 The Fitness Project provides the following API endpoints:
 
 - `GET /create_user/`: Healthcheck endpoint for Operator Service.
+
+
+<!-- ## Remove table schema and create -->
+<!-- rm ./app/fitness.db -->
+
+<!-- python3 database.py -->
