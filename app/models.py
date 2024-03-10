@@ -1,6 +1,7 @@
-from sqlalchemy import Column, Integer, String, ForeignKey
+from sqlalchemy import Column, Integer, String, ForeignKey,Boolean,Enum
 from .database import Base
 from sqlalchemy.orm import relationship
+# from enum import Enum as UserEnum
 
 
 class Activity(Base):
@@ -9,11 +10,16 @@ class Activity(Base):
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String, index=True)
     description = Column(String)
-    user_id = Column(Integer, ForeignKey('users.id'))
+    # user_id = Column(Integer, ForeignKey('users.id'))
 
-    creator = relationship("User", back_populates="activities")
+    # user = relationship("User", back_populates="activities")
 
 
+# class UserRole(UserEnum):
+#     ADMIN = "admin"
+#     CUSTOMER = "customer"
+
+    
 class User(Base):
     __tablename__ = 'users'
 
@@ -21,5 +27,41 @@ class User(Base):
     name = Column(String)
     email = Column(String)
     password = Column(String)
+    role = Column(String)
+    #   role = Column(Enum(UserRole), nullable=False)
+    admin_id = Column(Integer)
+    
+    # activities = relationship('Activity', back_populates="user")
+    exercises = relationship('Exercise', back_populates="user")
+    workout = relationship('Workout', back_populates="user")
 
-    activities = relationship('Activity', back_populates="creator")
+
+class Exercise(Base):
+    __tablename__ = 'exercises'
+
+    id = Column(Integer, primary_key=True, index=True)
+    exercise_name = Column(String, index=True)
+    exercise_type = Column(String, index=True)
+    measurement_type = Column(String, index=True)
+    per_count_second_unit_calorie = Column(Integer)
+    added_by = Column(String, index=True)
+    user_id = Column(Integer, ForeignKey('users.id'))
+
+    user = relationship("User", back_populates="exercises")
+    workout = relationship("Workout", back_populates="exercise")
+
+
+class Workout(Base):
+    __tablename__ = 'workouts'
+
+    id = Column(Integer, primary_key=True, index=True)
+    exercise_id = Column(Integer, ForeignKey('exercises.id'))
+    user_id = Column(Integer, ForeignKey('users.id'))
+    is_set_by_admin = Column(Boolean, index=True)
+    set_count = Column(Integer)
+    repetition_count = Column(Integer)
+    workout_time = Column(Integer)
+    calorie_burn = Column(Integer)
+
+    user = relationship("User", back_populates="workout")
+    exercise = relationship("Exercise", back_populates="workout")

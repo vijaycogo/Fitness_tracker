@@ -2,14 +2,6 @@
 from typing import List, Optional
 from pydantic import BaseModel
 
-class ActivityBase(BaseModel):
-    name: str
-    description:str
-
-class Activity(ActivityBase):
-    class Config():
-        orm_mode = True
-
 
 class UserResponse(BaseModel):
     id: int
@@ -24,21 +16,90 @@ class User(BaseModel):
     name:str
     email:str
     password:str
+    role:str
+    admin_id: Optional[int] = None
 
+# class ActivityBase(BaseModel):
+#     name: str
+#     description:str
+
+# class Activity(ActivityBase):
+#     class Config():
+#         orm_mode = True
 class ShowUser(BaseModel):
     id:int
     name:str
     email:str
-    activities : List[Activity] =[]
+    role:str
+    admin_id: Optional[int] = None
+    # activities : List[Activity] =[]
+    class Config():
+        orm_mode = True
+
+
+# class ShowActivity(BaseModel):
+#     name: str
+#     description:str
+#     creator: ShowUser
+
+#     class Config():
+#         orm_mode = True
+
+
+class ExerciseBase(BaseModel):
+    exercise_name: str
+    exercise_type:str
+    measurement_type:str
+    per_count_second_unit_calorie:int
+    added_by:str
+
+class Exercise(ExerciseBase):
+    class Config():
+        orm_mode = True
+
+
+class ShowExercise(BaseModel):
+    id:int
+    exercise_name: str
+    exercise_type:str
+    measurement_type:str
+    per_count_second_unit_calorie:int
+    added_by:str
+    user: ShowUser
+
     class Config():
         orm_mode = True
 
 
 
-class ShowActivity(BaseModel):
-    name: str
-    description:str
-    creator: ShowUser
+class WorkoutBase(BaseModel):
+    exercise_id: int
+    # user_id:int
+    is_set_by_admin:bool
+    set_count: Optional[int] = None
+    repetition_count:Optional[int] = None
+    # calorie_burn: Optional[int] = None
+    workout_time:Optional[int] = None
+
+class Workout(WorkoutBase):
+    class Config():
+        orm_mode = True
+
+
+class ShowWorkout(BaseModel):
+    id:int
+    exercise_id: int
+    user_id:int
+    is_set_by_admin:bool
+    set_count: int
+    repetition_count:int
+    # calorie_burn:int
+    calorie_burn: Optional[int] = None
+    workout_time:Optional[int] = None
+    
+    
+    # user: ShowUser
+    exercise: ShowExercise
 
     class Config():
         orm_mode = True

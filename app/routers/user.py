@@ -27,4 +27,12 @@ def create_user(request: schemas.User,db: Session = Depends(get_db)):
 def get_user(id:int,db: Session = Depends(get_db)):
     return user.show(id,db)
 
+@router.put('/{id}', status_code=status.HTTP_202_ACCEPTED)
+def update(id: int, request: schemas.User, db: Session = Depends(get_db)):
+    user.update(id, request, db)
+    return "User updated successfully"
 
+@router.delete('/{id}', status_code=status.HTTP_204_NO_CONTENT)
+def destroy(id: int, db: Session = Depends(get_db)):
+    user.destroy(id, db)
+    return "User deleted successfully"
