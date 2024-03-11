@@ -1,6 +1,7 @@
-from sqlalchemy import Column, Integer, String, ForeignKey,Boolean,Enum
+from sqlalchemy import Column, Integer, String, ForeignKey,Boolean,Enum,DateTime
 from .database import Base
 from sqlalchemy.orm import relationship
+from sqlalchemy.sql import func
 
 from .enum.user_enum import UserRole
 from .enum.exercise_enum import MajorMinorExerciseType
@@ -18,6 +19,8 @@ class User(Base):
     # role = Column(String)
     role = Column(Enum(UserRole), nullable=False)
     admin_id = Column(Integer)
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+    updated_at = Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now())
     
     exercises = relationship('Exercise', back_populates="user")
     workout = relationship('Workout', back_populates="user")
@@ -34,7 +37,9 @@ class Exercise(Base):
     added_by = Column(String, index=True)
     major_minor_type = Column(Enum(MajorMinorExerciseType), nullable=False)
     user_id = Column(Integer, ForeignKey('users.id'))
-
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+    updated_at = Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now())
+    
     user = relationship("User", back_populates="exercises")
     workout = relationship("Workout", back_populates="exercise")
 
@@ -50,6 +55,8 @@ class Workout(Base):
     repetition_count = Column(Integer)
     workout_time = Column(Integer)
     calorie_burn = Column(Integer)
-
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+    updated_at = Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now())
+    
     user = relationship("User", back_populates="workout")
     exercise = relationship("Exercise", back_populates="workout")

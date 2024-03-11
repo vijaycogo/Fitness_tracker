@@ -41,7 +41,7 @@ def show(id:int, db: Session = Depends(get_db)):
 @router.put('/{id}', status_code=status.HTTP_202_ACCEPTED)
 def update(id:int, request: schemas.Exercise, db: Session = Depends(get_db)):
     exercise.update(id,request, db)
-    return "User updated successfully"
+    return "Exercise updated successfully"
 
 
 @router.delete('/{id}', status_code=status.HTTP_204_NO_CONTENT)

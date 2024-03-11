@@ -1,6 +1,7 @@
 
 from typing import List, Optional
 from pydantic import BaseModel
+from datetime import datetime
 from .enum.user_enum import UserRole
 from .enum.exercise_enum import MeasurementType
 from .enum.exercise_enum import MajorMinorExerciseType
@@ -31,6 +32,8 @@ class ShowUser(BaseModel):
     email:str
     role:UserRole
     admin_id: Optional[int] = None
+    created_at:datetime
+    updated_at:datetime
     # activities : List[Activity] =[]
     class Config():
         orm_mode = True
@@ -55,6 +58,8 @@ class ShowExercise(BaseModel):
     measurement_type:str
     per_count_second_unit_calorie:int
     added_by:str
+    created_at:datetime
+    updated_at:datetime
     user: ShowUser
 
     class Config():
@@ -84,6 +89,8 @@ class ShowWorkout(BaseModel):
     repetition_count:int
     calorie_burn: Optional[int] = None
     workout_time:Optional[int] = None
+    created_at:datetime
+    updated_at:datetime
     
     
     # user: ShowUser
