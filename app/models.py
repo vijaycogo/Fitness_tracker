@@ -1,12 +1,11 @@
 from sqlalchemy import Column, Integer, String, ForeignKey,Boolean,Enum
 from .database import Base
 from sqlalchemy.orm import relationship
-# from enum import Enum as UserEnum
 
-
-# class UserRole(UserEnum):
-#     ADMIN = "admin"
-#     CUSTOMER = "customer"
+from .enum.user_enum import UserRole
+from .enum.exercise_enum import MajorMinorExerciseType
+from .enum.exercise_enum import IndoorOutdoorExerciseType
+from .enum.exercise_enum import MeasurementType
 
     
 class User(Base):
@@ -16,8 +15,8 @@ class User(Base):
     name = Column(String)
     email = Column(String)
     password = Column(String)
-    role = Column(String)
-    #   role = Column(Enum(UserRole), nullable=False)
+    # role = Column(String)
+    role = Column(Enum(UserRole), nullable=False)
     admin_id = Column(Integer)
     
     exercises = relationship('Exercise', back_populates="user")
@@ -29,10 +28,11 @@ class Exercise(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     exercise_name = Column(String, index=True)
-    exercise_type = Column(String, index=True)
-    measurement_type = Column(String, index=True)
+    exercise_type = Column(Enum(IndoorOutdoorExerciseType), nullable=False)
+    measurement_type = Column(Enum(MeasurementType), nullable=False)
     per_count_second_unit_calorie = Column(Integer)
     added_by = Column(String, index=True)
+    major_minor_type = Column(Enum(MajorMinorExerciseType), nullable=False)
     user_id = Column(Integer, ForeignKey('users.id'))
 
     user = relationship("User", back_populates="exercises")

@@ -1,7 +1,10 @@
 
 from typing import List, Optional
 from pydantic import BaseModel
-
+from .enum.user_enum import UserRole
+from .enum.exercise_enum import MeasurementType
+from .enum.exercise_enum import MajorMinorExerciseType
+from .enum.exercise_enum import IndoorOutdoorExerciseType
 
 class UserResponse(BaseModel):
     id: int
@@ -13,17 +16,20 @@ class UserUpdate(BaseModel):
 
 
 class User(BaseModel):
-    name:str
-    email:str
-    password:str
-    role:str
+    name: str
+    email: str
+    password: str
+    role: UserRole
     admin_id: Optional[int] = None
+
+    class Config:
+        orm_mode = True
 
 class ShowUser(BaseModel):
     id:int
     name:str
     email:str
-    role:str
+    role:UserRole
     admin_id: Optional[int] = None
     # activities : List[Activity] =[]
     class Config():
@@ -31,10 +37,11 @@ class ShowUser(BaseModel):
 
 class ExerciseBase(BaseModel):
     exercise_name: str
-    exercise_type:str
-    measurement_type:str
+    exercise_type:IndoorOutdoorExerciseType
+    measurement_type:MeasurementType
     per_count_second_unit_calorie:int
     added_by:str
+    major_minor_type:MajorMinorExerciseType
 
 class Exercise(ExerciseBase):
     class Config():
