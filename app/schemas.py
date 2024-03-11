@@ -92,6 +92,23 @@ class ShowWorkout(BaseModel):
     class Config():
         orm_mode = True
 
+class ShowAllWorkout(BaseModel):
+    id:int
+    exercise_id: int
+    user_id:int
+    is_set_by_admin:bool
+    set_count: int
+    repetition_count:int
+    calorie_burn: Optional[int] = None
+    workout_time:Optional[int] = None
+    
+    
+    # user: ShowUser
+    # exercise: ShowExercise
+
+    class Config():
+        orm_mode = True
+
 
 class Login(BaseModel):
     username: str

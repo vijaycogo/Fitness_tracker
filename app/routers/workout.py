@@ -16,15 +16,30 @@ get_db = database.get_db
 def create(request: schemas.Workout, db: Session = Depends(get_db)):
     user_id =1
     # exersice_id = 1
-    return workout.create(request, db,user_id)
+    created_workout =  workout.create(request, db,user_id)
+    # created_workout.exercise.exercise_type.value
+    created_workout.exercise.exercise_type = created_workout.exercise.exercise_type.value
+    created_workout.exercise.measurement_type = created_workout.exercise.measurement_type.value
+    created_workout.exercise.major_minor_type = created_workout.exercise.major_minor_type.value
+    return created_workout
 
-@router.get('/', response_model=List[schemas.ShowWorkout])
+@router.get('/', response_model=List[schemas.ShowAllWorkout])
 def all(db: Session = Depends(get_db)):
-    return workout.get_all(db)
+    workout_items =  workout.get_all(db)
+    return workout_items
+
+# @router.get('/', response_model=List[schemas.ShowWorkout])
+# def list_all(db: Session = Depends(get_db)):
+#     return workout.get_all(db)
 
 @router.get('/{id}', status_code=200, response_model=schemas.ShowWorkout)
 def show(id:int, db: Session = Depends(get_db)):
-    return workout.show(id,db)
+    workout_item  = workout.show(id,db)
+
+    workout_item.exercise.exercise_type = workout_item.exercise.exercise_type.value
+    workout_item.exercise.measurement_type = workout_item.exercise.measurement_type.value
+    workout_item.exercise.major_minor_type = workout_item.exercise.major_minor_type.value
+    return workout_item
 
 
 @router.put('/{id}', status_code=status.HTTP_202_ACCEPTED)

@@ -1,6 +1,7 @@
 from sqlalchemy.orm import Session
 from .. import models, schemas
 from fastapi import HTTPException,status
+from app.enum.exercise_enum import MeasurementType
 
 def get_all(db: Session):
     workouts = db.query(models.Workout).all()
@@ -14,7 +15,7 @@ def create(request: schemas.Workout, db: Session, user_id):
     calorie_burn = 0
     per_count_calorie = exercise.per_count_second_unit_calorie
 
-    if exercise.measurement_type == "count":
+    if exercise.measurement_type == MeasurementType.count:
         
         # Calculate calorie_burn based on the formula
         calorie_burn = request.repetition_count * request.set_count * per_count_calorie

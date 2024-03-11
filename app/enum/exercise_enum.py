@@ -8,6 +8,7 @@ class IndoorOutdoorExerciseType(ExerciseEnum):
 class MajorMinorExerciseType(ExerciseEnum):
     mazor = "mazor"
     minor = "minor"
+    common = "common"
 
 class MeasurementType(ExerciseEnum):
     count = "count"
