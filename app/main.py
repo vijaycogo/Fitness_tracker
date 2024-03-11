@@ -2,18 +2,12 @@ from fastapi import FastAPI
 from . import  models
 from .database import engine
 
-from  .routers import activity, user, authentication
-# from  .routers import user
-# from  .routers import blog
-# from .routers import activity
-from .routers import exercise
-from .routers import workout
+from  .routers import exercise, workout, user, authentication
 app = FastAPI()
 
 models.Base.metadata.create_all(engine)
 
 app.include_router(authentication.router)
-# app.include_router(activity.router)
 app.include_router(user.router)
 app.include_router(exercise.router)
 app.include_router(workout.router)

@@ -19,13 +19,6 @@ class User(BaseModel):
     role:str
     admin_id: Optional[int] = None
 
-# class ActivityBase(BaseModel):
-#     name: str
-#     description:str
-
-# class Activity(ActivityBase):
-#     class Config():
-#         orm_mode = True
 class ShowUser(BaseModel):
     id:int
     name:str
@@ -35,16 +28,6 @@ class ShowUser(BaseModel):
     # activities : List[Activity] =[]
     class Config():
         orm_mode = True
-
-
-# class ShowActivity(BaseModel):
-#     name: str
-#     description:str
-#     creator: ShowUser
-
-#     class Config():
-#         orm_mode = True
-
 
 class ExerciseBase(BaseModel):
     exercise_name: str
@@ -78,7 +61,6 @@ class WorkoutBase(BaseModel):
     is_set_by_admin:bool
     set_count: Optional[int] = None
     repetition_count:Optional[int] = None
-    # calorie_burn: Optional[int] = None
     workout_time:Optional[int] = None
 
 class Workout(WorkoutBase):
@@ -93,7 +75,6 @@ class ShowWorkout(BaseModel):
     is_set_by_admin:bool
     set_count: int
     repetition_count:int
-    # calorie_burn:int
     calorie_burn: Optional[int] = None
     workout_time:Optional[int] = None
     

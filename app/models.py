@@ -4,17 +4,6 @@ from sqlalchemy.orm import relationship
 # from enum import Enum as UserEnum
 
 
-class Activity(Base):
-    __tablename__ = 'activities'
-
-    id = Column(Integer, primary_key=True, index=True)
-    name = Column(String, index=True)
-    description = Column(String)
-    # user_id = Column(Integer, ForeignKey('users.id'))
-
-    # user = relationship("User", back_populates="activities")
-
-
 # class UserRole(UserEnum):
 #     ADMIN = "admin"
 #     CUSTOMER = "customer"
@@ -31,7 +20,6 @@ class User(Base):
     #   role = Column(Enum(UserRole), nullable=False)
     admin_id = Column(Integer)
     
-    # activities = relationship('Activity', back_populates="user")
     exercises = relationship('Exercise', back_populates="user")
     workout = relationship('Workout', back_populates="user")
 
