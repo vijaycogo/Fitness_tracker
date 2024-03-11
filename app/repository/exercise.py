@@ -6,8 +6,8 @@ def get_all(db: Session):
     exercises = db.query(models.Exercise).all()
     return exercises
 
-def create(request: schemas.Exercise,db: Session):
-    new_exercise = models.Exercise(exercise_name=request.exercise_name, exercise_type=request.exercise_type, measurement_type=request.measurement_type, per_count_second_unit_calorie=request.per_count_second_unit_calorie, added_by=request.added_by, major_minor_type= request.major_minor_type, user_id=1)
+def create(request: schemas.Exercise, db: Session, user_id: int):
+    new_exercise = models.Exercise(exercise_name=request.exercise_name, exercise_type=request.exercise_type, measurement_type=request.measurement_type, per_count_second_unit_calorie=request.per_count_second_unit_calorie, added_by=request.added_by, major_minor_type= request.major_minor_type, user_id=user_id)
     db.add(new_exercise)
     db.commit()
     db.refresh(new_exercise)

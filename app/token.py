@@ -5,7 +5,8 @@ from . import schemas
 SECRET_KEY = "09d25e094faa6ca2556c818166b7a9563b93f7099f6f0f4caa6cf63b88e8d3e7"
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
-
+from sqlalchemy.orm import Session
+from app.models import User
 
 def create_access_token(data: dict):
     to_encode = data.copy()
@@ -15,7 +16,7 @@ def create_access_token(data: dict):
     return encoded_jwt
 
 
-def verify_token(token: str, credentials_exception):
+def verify_token(token: str, credentials_exception, db):
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
         email: str = payload.get("sub")
@@ -24,3 +25,10 @@ def verify_token(token: str, credentials_exception):
         token_data = schemas.TokenData(email=email)
     except JWTError:
         raise credentials_exception
+    user = get_user(email, db)
+    if user is None:
+        raise credentials_exception
+    return user
+
+def get_user(email: str, db: Session):
+    return db.query(User).filter(User.email == email).first()

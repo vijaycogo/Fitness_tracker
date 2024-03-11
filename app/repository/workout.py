@@ -7,7 +7,7 @@ def get_all(db: Session):
     workouts = db.query(models.Workout).all()
     return workouts
 
-def create(request: schemas.Workout, db: Session, user_id):
+def create(request: schemas.Workout, db: Session, user_id: int):
     exercise = db.query(models.Exercise).filter(models.Exercise.id == request.exercise_id).first()
     if not exercise:
         raise HTTPException(status_code=404, detail="Exercise not found")
@@ -22,7 +22,6 @@ def create(request: schemas.Workout, db: Session, user_id):
     else:
         calorie_burn = request.workout_time * per_count_calorie
 
-        
     new_workout = models.Workout(
         is_set_by_admin=request.is_set_by_admin,
         set_count=request.set_count,
@@ -47,7 +46,7 @@ def show(id:int,db:Session):
     return workout
 
 
-def update(id:int,request:schemas.Workout, db:Session):
+def update(id:int, request:schemas.Workout, db:Session, user_id: int):
     workout = db.query(models.Workout).filter(models.Workout.id == id).first()
 
     if not workout:
@@ -70,14 +69,13 @@ def update(id:int,request:schemas.Workout, db:Session):
         calorie_burn = request.workout_time * per_count_calorie
 
     workout.exercise_id = request.exercise_id
-    # workout.user_id = request.user_id
+    workout.user_id = user_id
     workout.is_set_by_admin = request.is_set_by_admin
     workout.set_count = request.set_count
     workout.repetition_count = request.repetition_count
     workout.calorie_burn = calorie_burn
     workout.workout_time = request.workout_time
     db.commit()
-    # Return updated user attributes
     return workout
 
 
