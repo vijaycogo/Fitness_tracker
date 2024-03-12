@@ -1,6 +1,8 @@
 from sqlalchemy.orm import Session
 from .. import models, schemas
 from fastapi import HTTPException,status
+# from app.database import SessionLocal
+from app.models import Workout
 from app.enum.exercise_enum import MeasurementType
 
 def get_all(db: Session):

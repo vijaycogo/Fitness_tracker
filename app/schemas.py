@@ -46,6 +46,15 @@ class ExerciseBase(BaseModel):
     added_by:str
     major_minor_type:MajorMinorExerciseType
 
+class AnalyticsExercise(BaseModel):
+    exercise_name: str
+    exercise_type:IndoorOutdoorExerciseType
+    measurement_type:MeasurementType
+    per_count_second_unit_calorie:int
+    added_by:str
+    major_minor_type:MajorMinorExerciseType
+    created_at:datetime
+
 class Exercise(ExerciseBase):
     class Config():
         orm_mode = True
@@ -116,6 +125,20 @@ class ShowAllWorkout(BaseModel):
     class Config():
         orm_mode = True
 
+
+class ShowProgressWorkout(BaseModel):
+    id:int
+    exercise_id: int
+    user_id:int
+    is_set_by_admin:bool
+    set_count: int
+    repetition_count:int
+    calorie_burn: Optional[int] = None
+    workout_time:Optional[int] = None
+    created_at: datetime
+    
+    class Config():
+        orm_mode = True
 
 class Login(BaseModel):
     username: str
