@@ -19,8 +19,12 @@ router = APIRouter(
 async def list_users(
     user_id: int = Query(None, description="Filter users by user_id"),
     role: str = Query(None, description="Filter users by role"),
-    admin_id: int = Query(None, description="Filter users by admin_id")
+    email: str = Query(None, description="Filter users by email"),
+    admin_id: int = Query(None, description="Filter users by admin_id"),
+    current_user: schemas.User = Depends(oauth2.get_current_user)
 ):
+    if current_user.role.value != "admin":
+        raise HTTPException(status_code=403, detail="You are not authorized to access this resource.")
     db = SessionLocal()
     try:
         query = db.query(User)
@@ -28,6 +32,8 @@ async def list_users(
             query = query.filter(User.id == user_id)
         if role is not None:
             query = query.filter(User.role == role)
+        if email is not None:
+            query = query.filter(User.email == email)
         if admin_id is not None:
             query = query.filter(User.admin_id == admin_id)
 
@@ -49,8 +55,12 @@ async def list_exercises(
     measurement_type: str = Query(None, description="Filter exercises by measurement_type"),
     major_minor_type: str = Query(None, description="Filter exercises by major_minor_type"),
     added_by: str = Query(None, description="Filter exercises by added_by"),
-    user_id: int = Query(None, description="Filter exercises by user_id")
+    user_id: int = Query(None, description="Filter exercises by user_id"),
+    current_user: schemas.User = Depends(oauth2.get_current_user)
 ):
+    if current_user.role.value != "admin":
+        raise HTTPException(status_code=403, detail="You are not authorized to access this resource.")
+
     db = SessionLocal()
     try:
         query = db.query(Exercise)
@@ -86,9 +96,12 @@ async def list_workouts(
     workout_id: int = Query(None, description="Filter workouts by workout_id"),
     exercise_id: int = Query(None, description="Filter workouts by exercise"),
     user_id: int = Query(None, description="Filter workouts by user_id"),
-    is_set_by_admin: bool = Query(None, description="Filter workouts by user_id")
-    
+    is_set_by_admin: bool = Query(None, description="Filter workouts by user_id"),
+    current_user: schemas.User = Depends(oauth2.get_current_user)
 ):
+    if current_user.role.value != "admin":
+        raise HTTPException(status_code=403, detail="You are not authorized to access this resource.")
+
     db = SessionLocal()
     try:
         query = db.query(Workout)
