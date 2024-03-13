@@ -14,9 +14,8 @@ class User(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String)
-    email = Column(String)
+    email = Column(String, index=True, unique=True)
     password = Column(String)
-    # role = Column(String)
     role = Column(Enum(UserRole), nullable=False)
     admin_id = Column(Integer)
     created_at = Column(DateTime(timezone=True), server_default=func.now())

@@ -3,13 +3,50 @@ from sqlalchemy.orm import Session
 from .. import models, schemas
 from fastapi import HTTPException,status
 from ..hashing import Hash
+import re
 
-def create(request: schemas.User,db:Session):
-    new_user = models.User(name=request.name,email=request.email,password=Hash.bcrypt(request.password),role=request.role, admin_id = request.admin_id)
-    db.add(new_user)
-    db.commit()
-    db.refresh(new_user)
-    return new_user
+# def create(request: schemas.User,db:Session):
+#     new_user = models.User(name=request.name,email=request.email,password=Hash.bcrypt(request.password),role=request.role, admin_id = request.admin_id)
+#     db.add(new_user)
+#     db.commit()
+#     db.refresh(new_user)
+#     return new_user
+
+
+def is_valid_email(email):
+    # Define a regular expression for basic email validation
+    email_regex = r'^\S+@\S+\.\S+$'
+    return re.match(email_regex, email) is not None
+
+def create(request: schemas.User, db: Session):
+    try:
+        # Check if the provided email is valid
+        if not is_valid_email(request.email):
+            raise ValueError("Invalid email format")
+
+        new_user = models.User(
+            name=request.name,
+            email=request.email,
+            password=Hash.bcrypt(request.password),
+            role=request.role,
+            admin_id=request.admin_id
+        )
+
+        db.add(new_user)
+        db.commit()
+        db.refresh(new_user)
+
+        return new_user
+    except ValueError as ve:
+        raise HTTPException(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            detail=str(ve)
+        )
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=str(e)
+        )
 
 def show(id:int,db:Session):
     user = db.query(models.User).filter(models.User.id == id).first()
