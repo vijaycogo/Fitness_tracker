@@ -1,6 +1,6 @@
 from enum import Enum as ExerciseEnum
 
-# Defining an enumeration class for Indoor and Outdoor exercise types.
+# Defining an enumeration class for Indoor and Outdoor exercise types
 class IndoorOutdoorExerciseType(ExerciseEnum):
     indoors = "indoors"
     outdoors = "outdoors"

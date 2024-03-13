@@ -160,6 +160,6 @@ class Token(BaseModel):
     access_token: str
     token_type: str
 
-# Model for token data
+# Model for token data.
 class TokenData(BaseModel):
     email: Optional[str] = None

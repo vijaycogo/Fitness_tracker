@@ -7,7 +7,7 @@ from  .routers import exercise, workout, user, authentication, analytics
 # Creating an instance of FastAPI
 app = FastAPI()
 
-# Creating database tables based on the defined models
+# Creating database tables based on the defined models.
 models.Base.metadata.create_all(engine)
 
 # Including routers for different endpoints in the application

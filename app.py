@@ -17,7 +17,7 @@ def make_request(endpoint, params):
         st.error(f"Error: {response.status_code}")
         return None
 
-# Streamlit UI
+# Streamlit UI.
 def main():
     st.title("Fitness Analytics Dashboard")
 

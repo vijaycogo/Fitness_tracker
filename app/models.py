@@ -65,7 +65,7 @@ class Workout(Base):
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     updated_at = Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now())
     
-    # Relationship with users table
+    # Relationship with users table.
     user = relationship("User", back_populates="workout")
     # Relationship with exercises table
     exercise = relationship("Exercise", back_populates="workout")

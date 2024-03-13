@@ -18,7 +18,7 @@ Base.metadata.create_all(bind=engine)
 
 
 
-# Function to retrieve a database session
+# Function to retrieve a database session.
 def get_db():
     db = SessionLocal()         # Creating a database session
     try:

@@ -89,7 +89,7 @@ def update(id:int, request:schemas.Workout, db:Session, user_id: int):
     db.commit()
     return workout
 
-# Function to delete a workout entry from the database
+# Function to delete a workout entry from the database.
 def destroy(id:int,db: Session):
     # Querying the workout by its ID
     workout = db.query(models.Workout).filter(models.Workout.id == id)

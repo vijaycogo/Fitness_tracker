@@ -40,7 +40,7 @@ def show(id:int, db: Session = Depends(get_db), current_user: schemas.User = Dep
     workout_item.exercise.major_minor_type = workout_item.exercise.major_minor_type.value
     return workout_item
 
-# Route for updating a workout
+# Route for updating a workout.
 @router.put('/{id}', status_code=status.HTTP_202_ACCEPTED)
 def update(id:int, request: schemas.Workout, db: Session = Depends(get_db), current_user: schemas.User = Depends(oauth2.get_current_user)):
     workout.update(id,request, db, current_user.id)

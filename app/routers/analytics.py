@@ -12,7 +12,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 
-# Creating an APIRouter instance for handling analytics endpoints
+# Creating an APIRouter instance for handling analytics endpoints.
 router = APIRouter(
     prefix="/analytics",
     tags=['Analytics']

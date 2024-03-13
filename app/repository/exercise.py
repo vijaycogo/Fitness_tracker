@@ -49,7 +49,7 @@ def update(id:int,request:schemas.Exercise, db:Session):
     return exercise
 
 
-# Function to delete an exercise entry from the database
+# Function to delete an exercise entry from the database.
 def destroy(id:int,db: Session):
     exercise = db.query(models.Exercise).filter(models.Exercise.id == id)
 

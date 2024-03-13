@@ -42,7 +42,7 @@ def get_all_users(db: Session = Depends(get_db), current_user: schemas.User = De
     return users
 
 
-# Route for updating a user by ID
+# Route for updating a user by ID.
 @router.put('/{id}', status_code=status.HTTP_202_ACCEPTED)
 def update(id: int, request: schemas.User, db: Session = Depends(get_db), current_user: schemas.User = Depends(oauth2.get_current_user)):
     user.update(id, request, db)

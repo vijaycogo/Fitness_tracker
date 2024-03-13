@@ -11,7 +11,7 @@ from sqlalchemy.orm import Session
 from app.models import User
 
 
-# Function to create access token
+# Function to create access token.
 def create_access_token(data: dict):
     to_encode = data.copy()
     expire = datetime.utcnow() + timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)

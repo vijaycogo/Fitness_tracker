@@ -28,7 +28,7 @@ engine = create_engine(SQLALCHEMY_DATABASE_URL, connect_args={"check_same_thread
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 Base = declarative_base()
 
-# Create tables in the database
+# Create tables in the database.
 Base.metadata.create_all(bind=engine)
 
 # if __name__ == "__main__":

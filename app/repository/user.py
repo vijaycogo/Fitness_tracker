@@ -87,7 +87,7 @@ def update(id: int, request: schemas.User, db: Session):
     return db_user
 
 
-# Function to delete a user entry from the database
+# Function to delete a user entry from the database.
 def destroy(id: int, db: Session):
     # Querying the user by its ID
     db_user = db.query(models.User).filter(models.User.id == id).first()

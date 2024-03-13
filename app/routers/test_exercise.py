@@ -146,7 +146,7 @@ class TestExerciseEndpoints(unittest.TestCase):
         mock_user = MagicMock(id=1, name="shree", email="shree@gmail.com", role=UserRole.admin)
         mock_verify_token.return_value = mock_user
 
-        # Mock the destroy_user function
+        # Mock the destroy_user function.
         mock_destroy_exercise.return_value = None
 
         response = self.client.delete("/exercise/1", headers={"Authorization": "Bearer valid_token"})

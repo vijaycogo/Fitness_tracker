@@ -116,7 +116,7 @@ class TestUserEndpoints(unittest.TestCase):
     @patch('app.oauth2.token.verify_token')
     @patch('app.repository.user.get_all_user')
 
-    # test getting all Users
+    # test getting all Users.
     def test_get_all_users(self, mock_get_all_user, mock_verify_token):
         # Mock the get_current_user function
         mock_user = MagicMock(id=1, name="shree", email="shree@gmail.com", role=UserRole.admin)
