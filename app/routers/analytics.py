@@ -5,8 +5,11 @@ from app import schemas
 from app.models import User, Workout, Exercise
 from app.database import SessionLocal
 from sqlalchemy.orm import Session
+from sqlalchemy import func
 from typing import List
 from datetime import date, datetime
+import pandas as pd
+import matplotlib.pyplot as plt
 
 
 router = APIRouter(
@@ -115,6 +118,77 @@ async def list_workouts(
             query = query.filter(Workout.is_set_by_admin == is_set_by_admin)
 
         workouts = query.all()
+        return workouts
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+    finally:
+        db.close()
+
+
+@router.get("/progress-chart/")
+async def progress_chart(
+    start_date: date = Query(None, description="Filter by start date"),
+    end_date: date = Query(None, description="Filter by end date"),
+    user_id: int = Query(None, description="Filter by user_id"),
+    exercise_id: int = Query(None, description="Filter workouts by exercise"),
+    # current_user: schemas.User = Depends(oauth2.get_current_user)
+):
+    # if current_user.role.value != "admin":
+    #     raise HTTPException(status_code=403, detail="You are not authorized to access this resource.")
+
+    db = SessionLocal()
+    try:
+        query = db.query(Workout.created_at, func.sum(Workout.calorie_burn).label("total_calories_burnt"))
+        if start_date is not None:
+            query = query.filter(Workout.created_at >= start_date)
+        if end_date is not None:
+            query = query.filter(Workout.created_at <= end_date)
+        if user_id is not None:
+            query = query.filter(Workout.user_id == user_id)
+        if exercise_id is not None:
+            query = query.filter(Workout.exercise_id == exercise_id)    
+
+        result = query.group_by(Workout.created_at).all()
+        
+        # Convert result to DataFrame for easier plotting
+        df = pd.DataFrame(result, columns=['created_at', 'total_calories_burnt'])
+        
+        # Plotting the progress chart
+        plt.plot(df['created_at'], df['total_calories_burnt'])
+        plt.xlabel('Date')
+        plt.ylabel('Total Calories Burnt')
+        plt.title('Progress Chart')
+        plt.show()
+
+        return result
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+    finally:
+        db.close()
+
+@router.get("/workout-summary/")
+async def workout_summary(
+    start_date: date = Query(None, description="Filter by start date"),
+    end_date: date = Query(None, description="Filter by end date"),
+    user_id: int = Query(None, description="Filter by user_id"),
+    # current_user: schemas.User = Depends(oauth2.get_current_user)
+):
+    # if current_user.role.value != "admin":
+    #     raise HTTPException(status_code=403, detail="You are not authorized to access this resource.")
+
+    db = SessionLocal()
+    try:
+        query = db.query(Workout)
+        if start_date is not None:
+            query = query.filter(Workout.created_at >= start_date)
+        if end_date is not None:
+            query = query.filter(Workout.created_at <= end_date)
+        if user_id is not None:
+            query = query.filter(Workout.user_id == user_id)
+
+        workouts = query.all()
+      
+
         return workouts
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
