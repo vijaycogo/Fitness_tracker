@@ -19,6 +19,6 @@ def get_current_user(data: str = Depends(oauth2_scheme),db: Session = Depends(ge
         headers={"WWW-Authenticate": "Bearer"},
     )
 
-    # Verifying the provided token and getting the user
+    # Verifying the provided token and getting the user.
     user= token.verify_token(data, credentials_exception,db)
     return user

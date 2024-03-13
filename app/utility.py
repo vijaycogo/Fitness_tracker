@@ -6,7 +6,7 @@ from app.models import Base
 
 # Function to retrieve a database session
 def get_db():
-    db = SessionLocal()      # Creating a database session
+    db = SessionLocal()      # Creating a database session.
     try:
         yield db
     finally:

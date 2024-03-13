@@ -9,6 +9,6 @@ class Hash():
     # Method to hash a password using bcrypt algorithm
     def bcrypt(password: str):
         return pwd_cxt.hash(password)
-    # Method to verify a plain password against its hashed counterpart
+    # Method to verify a plain password against its hashed counterpart.
     def verify(hashed_password,plain_password):
         return pwd_cxt.verify(plain_password,hashed_password)

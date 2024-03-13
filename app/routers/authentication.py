@@ -7,7 +7,7 @@ from sqlalchemy.orm import Session
 # Initializing APIRouter instance with 'Authentication' tag
 router = APIRouter(tags=['Authentication'])
 
-# Route for user login
+# Route for user login.
 @router.post('/login')
 def login(request:OAuth2PasswordRequestForm = Depends(), db: Session = Depends(database.get_db)):
     # Querying user from the database based on email

@@ -54,7 +54,7 @@ def update(id:int, request: schemas.Exercise, db: Session = Depends(get_db), cur
     exercise.update(id,request, db)
     return "Exercise updated successfully"
 
-# Route for deleting an existing exercise by ID
+# Route for deleting an existing exercise by ID.
 @router.delete('/{id}', status_code=status.HTTP_204_NO_CONTENT)
 def destroy(id:int, db: Session = Depends(get_db), current_user: schemas.User = Depends(oauth2.get_current_user)):
     return exercise.destroy(id,db)

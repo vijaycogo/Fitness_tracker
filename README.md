@@ -65,7 +65,7 @@ The Fitness Project provides the following API endpoints:
 - `GET /exercises/{exercise_id}/`        : Retrieve information about a specific exercise.
 - `GET /exercises/workout/{workout_id}/` : Retrieve all exercises for a specific workout.
 - `PUT /exercises/{exercise_id}/`        : Update information about a specific exercise.
-- `DELETE /exercises/{exercise_id}/`     : Delete a specific exercise.
+- `DELETE /exercises/{exercise_id}/`     : Delete a specific exercise
 
 
 <!-- ## Remove table schema and create -->

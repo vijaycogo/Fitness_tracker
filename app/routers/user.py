@@ -47,7 +47,7 @@ def update(id: int, request: schemas.User, db: Session = Depends(get_db), curren
     user.update(id, request, db)
     return "User updated successfully"
 
-# Route for deleting a user by ID
+# Route for deleting a user by ID.
 @router.delete('/{id}', status_code=status.HTTP_204_NO_CONTENT)
 def destroy(id: int, db: Session = Depends(get_db), current_user: schemas.User = Depends(oauth2.get_current_user)):
     user.destroy(id, db)
