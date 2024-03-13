@@ -18,10 +18,10 @@ Base.metadata.create_all(bind=engine)
 
 
 
-
+# Function to retrieve a database session
 def get_db():
-    db = SessionLocal()
+    db = SessionLocal()     # Creating a database session
     try:
-        yield db
+        yield db        # Yielding the session to be used in the context
     finally:
-        db.close()
+        db.close()      # Closing the session after its usage
