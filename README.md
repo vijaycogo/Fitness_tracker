@@ -21,7 +21,7 @@ Before running the Project, make sure you have the following installed:
 * Clone the repository:
 
 ```bash
-git clone 
+git clone git@github.com:vijaycogo/Fitness_tracker.git
 
 ```
 
@@ -39,8 +39,8 @@ The server will start running at `http://localhost:8000`. You can access the int
 The Fitness Project provides the following API endpoints:
 
 ### User Endpoints
-- `POST /users/`            : Create a new user.
-- `GET /create_user/`       : Healthcheck endpoint for Operator Service.
+- `GET /users/`             : Get all user.
+- `POST /create_user/`      : Create a new user.
 - `PUT /users/{user_id}/`   : Update user information.
 - `DELETE /users/{user_id}/`: Delete User Information.
 

@@ -62,9 +62,6 @@ async def list_exercises(
     user_id: int = Query(None, description="Filter exercises by user_id"),
     current_user: schemas.User = Depends(oauth2.get_current_user)
 ):
-    if current_user.role.value != "admin":
-        raise HTTPException(status_code=403, detail="You are not authorized to access this resource.")
-
     db = SessionLocal()
     try:
         query = db.query(Exercise)
@@ -104,8 +101,6 @@ async def list_workouts(
     is_set_by_admin: bool = Query(None, description="Filter workouts by user_id"),
     current_user: schemas.User = Depends(oauth2.get_current_user)
 ):
-    if current_user.role.value != "admin":
-        raise HTTPException(status_code=403, detail="You are not authorized to access this resource.")
 
     db = SessionLocal()
     try:
@@ -135,8 +130,6 @@ async def progress_chart(
     exercise_id: int = Query(None, description="Filter workouts by exercise"),
     # current_user: schemas.User = Depends(oauth2.get_current_user)
 ):
-    # if current_user.role.value != "admin":
-    #     raise HTTPException(status_code=403, detail="You are not authorized to access this resource.")
 
     db = SessionLocal()
     try:

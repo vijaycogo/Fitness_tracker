@@ -17,6 +17,9 @@ get_db = database.get_db
 @router.post('/',response_model=schemas.ShowExercise, status_code=status.HTTP_201_CREATED,)
 def create(request: schemas.Exercise, db: Session = Depends(get_db), current_user: schemas.User = Depends(oauth2.get_current_user)):
     # Creating a new exercise in the database
+    if current_user.role.value != "admin":
+        raise HTTPException(status_code=403, detail="You are not authorized to access this resource.")
+
     created_exercise =  exercise.create(request, db, current_user.id)
     created_exercise.exercise_type = created_exercise.exercise_type.value
     created_exercise.measurement_type = created_exercise.measurement_type.value
@@ -27,6 +30,8 @@ def create(request: schemas.Exercise, db: Session = Depends(get_db), current_use
 # Route for retrieving all exercises
 @router.get('/', response_model=List[schemas.ShowExercise])
 def all(db: Session = Depends(get_db), current_user: schemas.User = Depends(oauth2.get_current_user)):
+    if current_user.role.value == "admin":
+        raise HTTPException(status_code=403, detail="You are not authorized to access this resource.")
     # Retrieving all exercises from the database
     exercise_items = exercise.get_all(db)
     for exercise_item in exercise_items:
@@ -49,7 +54,9 @@ def show(id:int, db: Session = Depends(get_db), current_user: schemas.User = Dep
 
 # Route for updating an existing exercise by ID
 @router.put('/{id}', status_code=status.HTTP_202_ACCEPTED)
-def update(id:int, request: schemas.Exercise, db: Session = Depends(get_db), current_user: schemas.User = Depends(oauth2.get_current_user)):
+def update(id:int, request: schemas.Exercise, db: Session = Depends(get_db), current_user: schemas.User = Depends(oauth2.get_current_user)):    
+    if current_user.role.value != "admin":
+        raise HTTPException(status_code=403, detail="You are not authorized to access this resource.")
     # Updating the exercise in the database by ID
     exercise.update(id,request, db)
     return "Exercise updated successfully"
@@ -58,5 +65,7 @@ def update(id:int, request: schemas.Exercise, db: Session = Depends(get_db), cur
 # Route for deleting an existing exercise by ID.
 @router.delete('/{id}', status_code=status.HTTP_204_NO_CONTENT)
 def destroy(id:int, db: Session = Depends(get_db), current_user: schemas.User = Depends(oauth2.get_current_user)):
+    if current_user.role.value != "admin":
+        raise HTTPException(status_code=403, detail="You are not authorized to access this resource.")
     return exercise.destroy(id,db)
 

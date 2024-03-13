@@ -1,5 +1,5 @@
 from typing import List
-from fastapi import APIRouter
+from fastapi import APIRouter, HTTPException
 from .. import schemas, database, models, oauth2
 # from app import database
 
@@ -27,6 +27,8 @@ def create_user(request: schemas.User,db: Session = Depends(get_db)):
 # Route for retrieving a user by ID
 @router.get('/{id}',response_model=schemas.ShowUser)
 def get_user(id:int,db: Session = Depends(get_db), current_user: schemas.User = Depends(oauth2.get_current_user)):
+    if current_user.role.value == "admin":
+        raise HTTPException(status_code=403, detail="You are not authorized to access this resource.")
     user_item =  user.show(id,db)
     user_item.role = user_item.role.value
     
@@ -35,6 +37,8 @@ def get_user(id:int,db: Session = Depends(get_db), current_user: schemas.User = 
 # Route for retrieving all users
 @router.get('/', response_model=List[schemas.ShowUser])
 def get_all_users(db: Session = Depends(get_db), current_user: schemas.User = Depends(oauth2.get_current_user)):
+    if current_user.role.value != "admin":
+        raise HTTPException(status_code=403, detail="You are not authorized to access this resource.")
     users = user.get_all_user(db)
     
     for individual_user in users:
@@ -45,6 +49,8 @@ def get_all_users(db: Session = Depends(get_db), current_user: schemas.User = De
 # Route for updating a user by ID.
 @router.put('/{id}', status_code=status.HTTP_202_ACCEPTED)
 def update(id: int, request: schemas.User, db: Session = Depends(get_db), current_user: schemas.User = Depends(oauth2.get_current_user)):
+    if current_user.role.value == "admin":
+        raise HTTPException(status_code=403, detail="You are not authorized to access this resource.")
     user.update(id, request, db)
     return "User updated successfully"
 
