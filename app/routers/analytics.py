@@ -12,12 +12,13 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 
+# Creating an APIRouter instance for handling analytics endpoints
 router = APIRouter(
     prefix="/analytics",
     tags=['Analytics']
 )
 
-
+# Endpoint to list users with optional filtering
 @router.get("/user/",response_model=List[schemas.ShowUser])
 async def list_users(
     user_id: int = Query(None, description="Filter users by user_id"),
@@ -49,7 +50,7 @@ async def list_users(
         db.close()
 
 
-
+# Endpoint to list exercises with optional filtering
 @router.get("/exercises/", response_model=List[schemas.AnalyticsExercise])
 async def list_exercises(
     exercise_id: int = Query(None, description="Filter exercises by exercise_id"),
@@ -94,6 +95,7 @@ async def list_exercises(
 
 
 
+# Endpoint to list workouts with optional filtering
 @router.get("/workouts/",response_model=List[schemas.ShowProgressWorkout])
 async def list_workouts(
     workout_id: int = Query(None, description="Filter workouts by workout_id"),
@@ -124,7 +126,7 @@ async def list_workouts(
     finally:
         db.close()
 
-
+# Endpoint to view progress chart
 @router.get("/progress-chart/")
 async def progress_chart(
     start_date: date = Query(None, description="Filter by start date"),
@@ -166,6 +168,7 @@ async def progress_chart(
     finally:
         db.close()
 
+# Endpoint to list workout summary
 @router.get("/workout-summary/")
 async def workout_summary(
     start_date: date = Query(None, description="Filter by start date"),

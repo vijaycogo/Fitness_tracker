@@ -35,12 +35,64 @@ The server will start running at `http://localhost:8000`. You can access the int
 
 ## API Endpoints
 
+
 The Fitness Project provides the following API endpoints:
 
-- `GET /create_user/`: Healthcheck endpoint for Operator Service.
+### User Endpoints
+- `POST /users/`            : Create a new user.
+- `GET /create_user/`       : Healthcheck endpoint for Operator Service.
+- `PUT /users/{user_id}/`   : Update user information.
+- `DELETE /users/{user_id}/`: Delete User Information.
+
+### Activity Endpoints
+
+- `POST /activities/`                : Create a new activity.
+- `GET /activities/{activity_id}/`   : Retrieve information about a specific activity.
+- `GET /activities/user/{user_id}/`  : Retrieve all activities for a specific user.
+- `PUT /activities/{activity_id}/`   : Update information about a specific activity.
+- `DELETE /activities/{activity_id}/`: Delete a specific activity.
+
+### Workout Endpoints
+
+- `POST /workouts/`                 : Create a new workout session.
+- `GET /workouts/{workout_id}/`     : Retrieve information about a specific workout.
+- `GET /workouts/user/{user_id}/`   : Retrieve all workouts for a specific user.
+- `PUT /workouts/{workout_id}/`     : Update information about a specific workout.
+- `DELETE /workouts/{workout_id}/`  : Delete a specific workout session.
+
+### Exercise Endpoints
+
+- `POST /exercises/`                     : Add a new exercise to a workout.
+- `GET /exercises/{exercise_id}/`        : Retrieve information about a specific exercise.
+- `GET /exercises/workout/{workout_id}/` : Retrieve all exercises for a specific workout.
+- `PUT /exercises/{exercise_id}/`        : Update information about a specific exercise.
+- `DELETE /exercises/{exercise_id}/`     : Delete a specific exercise
 
 
 <!-- ## Remove table schema and create -->
 <!-- rm ./app/fitness.db -->
 
 <!-- python3 database.py -->
+
+## ROUTES TO IMPLEMENT
+| METHOD |        ROUTE        |    FUNCTIONALITY   |   ACCESS      |
+| -------| ------------------- | -------------------| ------------- |
+| *POST* | ```/auth/signup/``` | _Register new user_|   _All users_ |
+| *POST* | ```/auth/login/```  |    _Login user_    |   _All users_ |
+ 
+## How to run the Project
+- Install SQllite, SQLalchemy
+- Install Python
+- Git clone the project
+- Create your virtualenv with `conda create` and activate it.
+- Install the requirements with ``` pip install -r requirements.txt ```
+- Set Up your SQLlite database and set its URI in your ```database.py```
+```
+engine=create_engine('postgresql://postgres:<username>:<password>@localhost/<db_name>',
+    echo=True
+)
+```
+ 
+- Create your database by running ``` python init_db.py ```
+- Finally run the API
+``` uvicorn main:app ``

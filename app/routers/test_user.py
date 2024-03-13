@@ -10,11 +10,13 @@ from app import oauth2
 
 class TestUserEndpoints(unittest.TestCase):
 
-    def setUp(self):
+    def setUp(self):        # Set up the test client and mock dependencies.
         self.client = TestClient(app)
 
     @patch('app.oauth2.token.verify_token')
     @patch('app.repository.user.show')
+
+    # Test retrieving user information.
     def test_get_user(self, mock_show_user, mock_verify_token):
         # Mock the get_current_user function
         mock_user = MagicMock(id=1, name="shree", email="shree@gmail.com", role=UserRole.admin)
@@ -42,6 +44,8 @@ class TestUserEndpoints(unittest.TestCase):
 
     @patch('app.oauth2.token.verify_token')
     @patch('app.repository.user.destroy')
+
+    # Test deleting a user.
     def test_delete_user(self, mock_destroy_user, mock_verify_token):
         # Mock the get_current_user function
         mock_user = MagicMock(id=1, name="shree", email="shree@gmail.com", role=UserRole.admin)
@@ -57,6 +61,8 @@ class TestUserEndpoints(unittest.TestCase):
 
     @patch('app.oauth2.token.verify_token')
     @patch('app.repository.user.update')
+
+    # test updating a User
     def test_update_user(self, mock_update_user, mock_verify_token):
         # Mock the get_current_user function
         mock_user = MagicMock(id=1, name="shree", email="shree@gmail.com", role=UserRole.admin)
@@ -81,6 +87,9 @@ class TestUserEndpoints(unittest.TestCase):
 
     @patch('app.oauth2.token.verify_token')
     @patch('app.repository.user.create')
+
+
+    # Test creating a User
     def test_create_user(self, mock_create_user, mock_verify_token):
         # Mock the get_current_user function
         mock_user = MagicMock(id=1, name="shree", email="shree@gmail.com", role=UserRole.admin)
@@ -106,6 +115,8 @@ class TestUserEndpoints(unittest.TestCase):
 
     @patch('app.oauth2.token.verify_token')
     @patch('app.repository.user.get_all_user')
+
+    # test getting all Users
     def test_get_all_users(self, mock_get_all_user, mock_verify_token):
         # Mock the get_current_user function
         mock_user = MagicMock(id=1, name="shree", email="shree@gmail.com", role=UserRole.admin)

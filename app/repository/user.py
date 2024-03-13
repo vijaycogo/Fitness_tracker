@@ -18,12 +18,14 @@ def is_valid_email(email):
     email_regex = r'^\S+@\S+\.\S+$'
     return re.match(email_regex, email) is not None
 
+# Function to create a new user entry in the database
 def create(request: schemas.User, db: Session):
     try:
         # Check if the provided email is valid
         if not is_valid_email(request.email):
             raise ValueError("Invalid email format")
 
+        # Creating a new User object with the provided data
         new_user = models.User(
             name=request.name,
             email=request.email,
@@ -32,9 +34,9 @@ def create(request: schemas.User, db: Session):
             admin_id=request.admin_id
         )
 
-        db.add(new_user)
-        db.commit()
-        db.refresh(new_user)
+        db.add(new_user)     # Adding the new user to the database
+        db.commit()     # Committing the transaction
+        db.refresh(new_user)        # Refreshing the object to reflect changes
 
         return new_user
     except ValueError as ve:
@@ -48,18 +50,21 @@ def create(request: schemas.User, db: Session):
             detail=str(e)
         )
 
+# Function to retrieve a single user by its ID
 def show(id:int,db:Session):
+    # Querying the user by its ID
     user = db.query(models.User).filter(models.User.id == id).first()
-    if not user:
+    if not user:    # If User not found
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
                             detail=f"User with the id {id} is not available")
     return user
 
+# Function to retrieve all users from the database
 def get_all_user(db: Session):
     users = db.query(models.User).all()
     return users
 
-
+# Function to update an existing user entry
 def update(id: int, request: schemas.User, db: Session):
     # Query the user by ID
     db_user = db.query(models.User).filter(models.User.id == id).first()
@@ -82,8 +87,9 @@ def update(id: int, request: schemas.User, db: Session):
     return db_user
 
 
-
+# Function to delete a user entry from the database
 def destroy(id: int, db: Session):
+    # Querying the user by its ID
     db_user = db.query(models.User).filter(models.User.id == id).first()
 
     if not db_user:

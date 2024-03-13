@@ -7,12 +7,12 @@ from app.enum.user_enum import UserRole
 
 class TestExerciseEndpoints(unittest.TestCase):
 
-    def setUp(self):
+    def setUp(self):        # Setup the test client 
         self.client = TestClient(app)
 
     @patch('app.oauth2.token.verify_token')
     @patch('app.repository.exercise.create')
-    def test_create_exercise(self, mock_create_exercise, mock_verify_token):
+    def test_create_exercise(self, mock_create_exercise, mock_verify_token):        # Test creating an exercise.
         # Mock the get_current_user function
         mock_user = MagicMock(id=1, name="shree", email="shree@gmail.com", role="admin")
         mock_verify_token.return_value = mock_user
@@ -43,6 +43,8 @@ class TestExerciseEndpoints(unittest.TestCase):
 
     @patch('app.oauth2.token.verify_token')
     @patch('app.repository.exercise.get_all')
+
+    # Test getting all exercises
     def test_get_all_exercises(self, mock_get_all_exercises, mock_verify_token):
         # Mock the get_current_user function
         mock_user = MagicMock(id=1, name="shree", email="shree@gmail.com", role="admin")
@@ -77,6 +79,8 @@ class TestExerciseEndpoints(unittest.TestCase):
 
     @patch('app.oauth2.token.verify_token')
     @patch('app.repository.exercise.show')
+
+    # Test getting a specific exercise.
     def test_get_exercise(self, mock_get_exercise, mock_verify_token):
         # Mock the get_current_user function
         mock_user = MagicMock(id=1, name="shree", email="shree@gmail.com", role="admin")
@@ -107,6 +111,8 @@ class TestExerciseEndpoints(unittest.TestCase):
         
     @patch('app.oauth2.token.verify_token')
     @patch('app.repository.exercise.update')
+
+    # Test uodating exercise
     def test_update_exercise(self, mock_update_exercise, mock_verify_token):
         # Mock the get_current_user function
         mock_user = MagicMock(id=1, name="shree", email="shree@gmail.com", role="admin")
@@ -133,6 +139,8 @@ class TestExerciseEndpoints(unittest.TestCase):
 
     @patch('app.oauth2.token.verify_token')
     @patch('app.repository.exercise.destroy')
+
+    # Test deleting exercise
     def test_delete_user(self, mock_destroy_exercise, mock_verify_token):
         # Mock the get_current_user function
         mock_user = MagicMock(id=1, name="shree", email="shree@gmail.com", role=UserRole.admin)
