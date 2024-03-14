@@ -25,10 +25,18 @@ def create_user(request: schemas.User,db: Session = Depends(get_db)):
     return created_user
 
 # Route for retrieving a user by ID
+# @router.get('/{id}',response_model=schemas.ShowUser)
+# def get_user(id:int,db: Session = Depends(get_db), current_user: schemas.User = Depends(oauth2.get_current_user)):
+#     if current_user.role.value == "admin":
+#         raise HTTPException(status_code=403, detail="You are not authorized to access this resource.")
+#     user_item =  user.show(id,db)
+#     user_item.role = user_item.role.value
+    
+#     return user_item
+
+
 @router.get('/{id}',response_model=schemas.ShowUser)
-def get_user(id:int,db: Session = Depends(get_db), current_user: schemas.User = Depends(oauth2.get_current_user)):
-    if current_user.role.value == "admin":
-        raise HTTPException(status_code=403, detail="You are not authorized to access this resource.")
+def get_user(id:int,db: Session = Depends(get_db)):
     user_item =  user.show(id,db)
     user_item.role = user_item.role.value
     
