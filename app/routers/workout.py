@@ -37,8 +37,8 @@ def all(db: Session = Depends(get_db), current_user: schemas.User = Depends(oaut
 # Route for getting a specific workout by its ID
 @router.get('/{id}', status_code=200, response_model=schemas.ShowWorkout)
 def show(id:int, db: Session = Depends(get_db), current_user: schemas.User = Depends(oauth2.get_current_user)):
-    if current_user.role.value == "admin":
-        raise HTTPException(status_code=403, detail="You are not authorized to access this resource.")
+    # if current_user.role.value == "admin":
+    #     raise HTTPException(status_code=403, detail="You are not authorized to access this resource.")
     workout_item  = workout.show(id,db)
 
     workout_item.exercise.exercise_type = workout_item.exercise.exercise_type.value

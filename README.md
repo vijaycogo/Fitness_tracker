@@ -35,7 +35,6 @@ The server will start running at `http://localhost:8000`. You can access the int
 
 ## API Endpoints
 
-
 The Fitness Project provides the following API endpoints:
 
 ### User Endpoints
@@ -44,13 +43,6 @@ The Fitness Project provides the following API endpoints:
 - `PUT /users/{user_id}/`   : Update user information.
 - `DELETE /users/{user_id}/`: Delete User Information.
 
-### Activity Endpoints
-
-- `POST /activities/`                : Create a new activity.
-- `GET /activities/{activity_id}/`   : Retrieve information about a specific activity.
-- `GET /activities/user/{user_id}/`  : Retrieve all activities for a specific user.
-- `PUT /activities/{activity_id}/`   : Update information about a specific activity.
-- `DELETE /activities/{activity_id}/`: Delete a specific activity.
 
 ### Workout Endpoints
 
@@ -66,13 +58,7 @@ The Fitness Project provides the following API endpoints:
 - `GET /exercises/{exercise_id}/`        : Retrieve information about a specific exercise.
 - `GET /exercises/workout/{workout_id}/` : Retrieve all exercises for a specific workout.
 - `PUT /exercises/{exercise_id}/`        : Update information about a specific exercise.
-- `DELETE /exercises/{exercise_id}/`     : Delete a specific exercise.
-
-
-<!-- ## Remove table schema and create -->
-<!-- rm ./app/fitness.db -->
-
-<!-- python3 database.py -->
+- `DELETE /exercises/{exercise_id}/`     : Delete a specific exercise
 
 ## ROUTES TO IMPLEMENT
 | METHOD |        ROUTE        |    FUNCTIONALITY   |   ACCESS      |

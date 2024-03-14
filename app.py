@@ -97,7 +97,7 @@ def main():
  
  
  
-            st.subheader("Create User")
+            st.subheader("Sign Up User")
            
             name = st.text_input("Name")
             email = st.text_input("Email")

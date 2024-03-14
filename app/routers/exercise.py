@@ -30,8 +30,8 @@ def create(request: schemas.Exercise, db: Session = Depends(get_db), current_use
 # Route for retrieving all exercises
 @router.get('/', response_model=List[schemas.ShowExercise])
 def all(db: Session = Depends(get_db), current_user: schemas.User = Depends(oauth2.get_current_user)):
-    if current_user.role.value == "admin":
-        raise HTTPException(status_code=403, detail="You are not authorized to access this resource.")
+    # if current_user.role.value != "admin":
+    #     raise HTTPException(status_code=403, detail="You are not authorized to access this resource.")
     # Retrieving all exercises from the database
     exercise_items = exercise.get_all(db)
     for exercise_item in exercise_items:

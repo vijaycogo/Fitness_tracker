@@ -6,6 +6,10 @@ from .. import schemas, database, models, oauth2
 from sqlalchemy.orm import Session
 from fastapi import APIRouter,Depends,status
 from ..repository import user
+from ..hashing import Hash
+import re
+from sqlalchemy.exc import IntegrityError
+
 
 
 # Initializing APIRouter instance with 'Users' tag and '/user' prefix
@@ -17,23 +21,86 @@ router = APIRouter(
 # Function to retrieve a database session
 get_db = database.get_db
 
-# Route for creating a new user
+def is_valid_email(email):
+    # Define a regular expression for basic email validation
+    email_regex = r'^\S+@\S+\.\S+$'
+    return re.match(email_regex, email) is not None
+
+
 @router.post('/', response_model=schemas.ShowUser)
-def create_user(request: schemas.User,db: Session = Depends(get_db)):
-    created_user = user.create(request, db)
-    created_user.role = created_user.role.value
-    return created_user
+def create(request: schemas.User, db: Session = Depends(get_db)):
+    try:
+        if not is_valid_email(request.email):
+            raise ValueError("Invalid email format")
 
-# Route for retrieving a user by ID
-# @router.get('/{id}',response_model=schemas.ShowUser)
-# def get_user(id:int,db: Session = Depends(get_db), current_user: schemas.User = Depends(oauth2.get_current_user)):
-#     if current_user.role.value == "admin":
-#         raise HTTPException(status_code=403, detail="You are not authorized to access this resource.")
-#     user_item =  user.show(id,db)
-#     user_item.role = user_item.role.value
-    
-#     return user_item
+        new_user = models.User(
+            name=request.name,
+            email=request.email,
+            password=Hash.bcrypt(request.password),
+            role=request.role,
+            admin_id=request.admin_id
+        )
 
+        db.add(new_user)
+        db.commit()
+        db.refresh(new_user)
+
+        return new_user
+
+    except ValueError as ve:
+        raise HTTPException(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            detail=str(ve)
+        )
+
+    except IntegrityError as ie:
+        # Handle database integrity errors
+        db.rollback()  # Rollback the transaction
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail="User with this email already exists."
+        )
+
+    except Exception as e:
+        # Handle other unexpected errors
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=str(e)
+        )
+
+
+
+
+# @router.post('/', response_model=schemas.ShowUser)
+# def create(request: schemas.User, db: Session = Depends(get_db)):
+#     try:
+#         # Check if the provided email is valid
+#         if not is_valid_email(request.email):
+#             raise ValueError("Invalid email format")
+
+#         new_user = models.User(
+#             name=request.name,
+#             email=request.email,
+#             password=Hash.bcrypt(request.password),
+#             role=request.role,
+#             admin_id=request.admin_id
+#         )
+
+#         db.add(new_user)
+#         db.commit()
+#         db.refresh(new_user)
+
+#         return new_user
+#     except ValueError as ve:
+#         raise HTTPException(
+#             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+#             detail=str(ve)
+#         )
+#     except Exception as e:
+#         raise HTTPException(
+#             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+#             detail=str(e)
+#         )
 
 @router.get('/{id}',response_model=schemas.ShowUser)
 def get_user(id:int,db: Session = Depends(get_db)):
