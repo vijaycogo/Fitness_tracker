@@ -68,40 +68,6 @@ def create(request: schemas.User, db: Session = Depends(get_db)):
             detail=str(e)
         )
 
-
-
-
-# @router.post('/', response_model=schemas.ShowUser)
-# def create(request: schemas.User, db: Session = Depends(get_db)):
-#     try:
-#         # Check if the provided email is valid
-#         if not is_valid_email(request.email):
-#             raise ValueError("Invalid email format")
-
-#         new_user = models.User(
-#             name=request.name,
-#             email=request.email,
-#             password=Hash.bcrypt(request.password),
-#             role=request.role,
-#             admin_id=request.admin_id
-#         )
-
-#         db.add(new_user)
-#         db.commit()
-#         db.refresh(new_user)
-
-#         return new_user
-#     except ValueError as ve:
-#         raise HTTPException(
-#             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
-#             detail=str(ve)
-#         )
-#     except Exception as e:
-#         raise HTTPException(
-#             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-#             detail=str(e)
-#         )
-
 @router.get('/{id}',response_model=schemas.ShowUser)
 def get_user(id:int,db: Session = Depends(get_db)):
     user_item =  user.show(id,db)

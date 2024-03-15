@@ -67,21 +67,9 @@ def get_all_user(token):
 
         users = response.json()
         st.write(users)
-        # return response.json()
+        return response.json()
     else:
         st.error("Failed to fetch users") 
-
-
-
-# def user_details_page(session_state):
-#     user_id = st.number_input("http://localhost:8000/User ID/", min_value=1, step=1)
-#     if st.button("Get User"):
-#         if user_id:
-#             st.write()
-#             user_data = get_user_by_id(user_id)
-#             st.write("User Details:")
-#             st.json(user_data)
- 
 
 
 def create_exercise(exercise_data, token):
@@ -91,9 +79,9 @@ def create_exercise(exercise_data, token):
     response = requests.post("http://127.0.0.1:8000/exercise/", headers=headers, json=exercise_data)
     if response.status_code == 201:
         st.success("Exercise created successfully")
+        return response.json()
     else:
         st.error("Failed to create exercise")
-    # return response.json()
  
 
 
@@ -107,7 +95,7 @@ def get_all_exercises(token):
 
         exercises = response.json()
         st.write(exercises)
-        # return response.json()
+        return response.json()
     else:
         st.error("Failed to fetch exercises")
 
@@ -123,74 +111,86 @@ def get_exercise_by_id(token, exercise_id):
  
 
 
-# def get_exercise_by_id(exercise_id):
-#     response = make_request(f'http://localhost:8000/exercise/{exercise_id}', method='get')
-#     if response.status_code == 200:
-#         exercise = response.json()
-#         st.write(exercise)
-#     else:
-#         st.error("Failed to fetch exercise")
+
+def update_exercise_by_id(token, exercise_data, exercise_id):
+    headers = {'accept': 'application/json',
+            'Authorization': f'Bearer {token}',
+            'Content-Type': 'application/json'}
  
-# Function to update an exercise by ID
-def update_exercise_by_id(exercise_id_to_update, name_update, description_update):
-    response = make_request(f'http://localhost:8000/exercise/{exercise_id_to_update}', method='put', data={"name": name_update, "description": description_update})
-    if response.status_code == 202:
-        st.success("Exercise updated successfully")
-    else:
-        st.error("Failed to update exercise")
+    url = f"http://localhost:8000/exercise/{exercise_id}"
+    response = requests.put(url, headers=headers, json = exercise_data )
+    return response.json()
+ 
  
 # Function to delete an exercise by ID
-def delete_exercise_by_id(exercise_id_to_delete):
-    response = make_request(f'http://localhost:8000/exercise/{exercise_id_to_delete}', method='delete')
-    if response.status_code == 204:
-        st.success("Exercise deleted successfully")
-    else:
-        st.error("Failed to delete exercise")
+def delete_exercise_by_id(token, exercise_id):
+    headers = {'accept': 'application/json',
+            'Authorization': f'Bearer {token}',
+            'Content-Type': 'application/json'}
+    url = f" http://localhost:8000/exercise/{exercise_id}"
+    response = requests.delete(url, headers=headers)
+    return response
+ 
+
  
  
 # Function to create a workout
-def create_workout(exercise_id, user_id):
-    response = make_request('http://localhost:8000/workout/', method='post', data={"exercise_id": exercise_id, "user_id": user_id})
+def create_workout(workout_data,token):
+    headers = {'accept': 'application/json',
+               'Authorization': f'Bearer {token}',
+               'Content-Type': 'application/json'}
+    response = requests.post("http://localhost:8000/workout/", headers=headers, json=workout_data)
     if response.status_code == 201:
         st.success("Workout created successfully")
+        return response.json()
     else:
         st.error("Failed to create workout")
- 
-# Function to get all workouts
-def get_all_workouts():
-    response = make_request('http://localhost:8000/workout/', method='get')
-    if response.status_code == 200:
-        workouts = response.json()
-        st.write(workouts)
-    else:
-        st.error("Failed to fetch workouts")
- 
-# Function to get a workout by ID
-def get_workout_by_id(workout_id):
-    response = make_request(f'http://localhost:8000/workout/{workout_id}', method='get')
+
+
+def get_all_workouts(token):
+    headers = {'accept': 'application/json',
+               'Authorization': f'Bearer {token}',
+               'Content-Type': 'application/json'}
+    response = requests.get("http://localhost:8000/workout/", headers=headers)
     if response.status_code == 200:
         workout = response.json()
         st.write(workout)
     else:
-        st.error("Failed to fetch workout")
- 
-# Function to update a workout by ID
-def update_workout_by_id(workout_id_to_update, exercise_id_update, user_id_update):
-    response = make_request(f'http://localhost:8000/workout/{workout_id_to_update}', method='put', data={"exercise_id": exercise_id_update, "user_id": user_id_update})
-    if response.status_code == 202:
-        st.success("Workout updated successfully")
+        st.error("Failed to fetch workouts")
+
+def get_workout_by_id(token, workout_id):
+    headers = {'accept': 'application/json',
+               'Authorization': f'Bearer {token}',
+               'Content-Type': 'application/json'}
+    url = f" http://localhost:8000/workout/{workout_id}"
+    response = requests.get(url, headers=headers)
+    
+    if response.status_code == 200:
+        return response.json()   
     else:
-        st.error("Failed to update workout")
+        st.error("Failed to fetch workouts")
+
+
+def update_workout_by_id(token, workout_data, workout_id):
+    headers = {'accept': 'application/json',
+            'Authorization': f'Bearer {token}',
+            'Content-Type': 'application/json'}
  
-# Function to delete a workout by ID
-def delete_workout_by_id(workout_id_to_delete):
-    response = make_request(f'http://localhost:8000/workout/{workout_id_to_delete}', method='delete')
-    if response.status_code == 204:
-        st.success("Workout deleted successfully")
-    else:
-        st.error("Failed to delete workout")
+    url = f"http://localhost:8000/workout/{workout_id}"
+    response = requests.put(url, headers=headers, json = workout_data )
+    return response.json()
  
  
+# Function to delete an exercise by ID
+def delete_workout_by_id(token, workout_id):
+    headers = {'accept': 'application/json',
+            'Authorization': f'Bearer {token}',
+            'Content-Type': 'application/json'}
+    url = f" http://localhost:8000/workout/{workout_id}"
+    response = requests.delete(url, headers=headers)
+    return response
+ 
+
 
 def set_session_data(key, value):
     session_state = st.session_state.get('session_state', {})
@@ -260,7 +260,7 @@ def main():
         if token:
             set_session_data('authKey',token)
             st.success("Login successful")
-            st.write("Token:", login_token)
+            # st.write("Token:", login_token)
             st.write("")
             st.write("")
             
@@ -268,7 +268,6 @@ def main():
 
 
     st.subheader("Create User")
-    
     name = st.text_input("Name")
     email = st.text_input("Email")
     password = st.text_input("Password", type="password")
@@ -297,7 +296,7 @@ def main():
 
     # Fetch a user by ID
     st.subheader("Get User by ID")
-    user_id = st.number_input("User ID", key="user_id_input")
+    user_id = st.number_input("User ID", min_value=1, step=1)
     if st.button("Get User", key="get_user_button"):
         token = get_session_data('authKey')
         if token:
@@ -325,17 +324,6 @@ def main():
     st.write("")
     
 
-    st.subheader("Get Users by ID")
-    user_id = st.number_input("Users ID", min_value=1, step=1)
-    if st.button("Get Users"):
-        token = get_session_data('authKey')
-        if token:
-            # get_all_user(token)
-            get_user_by_id(token, user_id)
-        else:
-            st.error("Please login first.")
-
-
     st.sidebar.subheader("Filters")
     start_date = st.sidebar.date_input("Start Date")
     end_date = st.sidebar.date_input("End Date")
@@ -350,6 +338,8 @@ def main():
             df = pd.DataFrame(data, columns=['created_at', 'total_calories_burnt'])
             st.line_chart(df.set_index('created_at'))
     
+
+    
     if st.sidebar.button("Show Workout Summary"):
         params = {"start_date": start_date, "end_date": end_date, "user_id": user_id}
         data = make_request1("/analytics/workout-summary/", params)
@@ -360,7 +350,7 @@ def main():
     st.subheader("Create Exercise")
     exercise_name = st.text_input("Exercise Name")
     added_by = st.selectbox("added_by", ["admin"])
-    per_count_second_unit_calorie = st.number_input("per_count_second_unit_calorie")
+    per_count_second_unit_calorie = st.number_input("per_count_second_unit_calorie",  min_value=1, step=1)
     exercise_type = st.selectbox("Exercise Type", ["outdoors", "indoors"])
     measurement_type = st.selectbox("measurement_type", ["count", "time"])
     major_minor_type = st.selectbox("mazor/minor Type", ["mazor", "minor", "common"])
@@ -406,7 +396,7 @@ def main():
         if token:
             exercise_data = get_exercise_by_id(token, exercise_id)
             if exercise_data:
-                st.write("User:", exercise_data)
+                st.write("Exercise:", exercise_data)
             else:
                 st.error("No Exersise found")
         else:
@@ -414,52 +404,154 @@ def main():
 
     # Update Exercise by ID
     st.subheader("Update Exercise by ID")
-    exercise_id_to_update = st.number_input("Exercise ID to update", min_value=1, step=1)
-    name_update = st.text_input("Update exercise Name")
-    description_update = st.text_input("Exercise Description")
+    exercise_id = st.number_input("input exercise_id",  min_value=1, step=1)
+    exercise_name = st.text_input("Update Exercise Name")
+    added_by_admin = st.selectbox("added_by_admin", ["admin"])
+    per_count_second_unit_calorie = st.number_input("Update per_count_second_unit_calorie", min_value=1, step=1)
+    exercise_type = st.selectbox("Update Exercise Type", ["outdoors", "indoors"])
+    measurement_type = st.selectbox("Update measurement_type", ["count", "time"])
+    major_minor_type = st.selectbox("Update mazor/minor Type", ["mazor", "minor", "common"])
+   
+    exercise_data = {
+        "exercise_name": exercise_name,
+        "added_by": added_by_admin,
+        "per_count_second_unit_calorie": per_count_second_unit_calorie,
+        "exercise_type": exercise_type,
+        "measurement_type": measurement_type,
+        "major_minor_type": major_minor_type,
+    }
+   
     if st.button("Update Exercise"):
-        update_exercise_by_id(exercise_id_to_update, name_update, description_update)
-
+        token = get_session_data('authKey')
+        if token:
+            exercise_data = update_exercise_by_id(token, exercise_data, exercise_id)
+            if exercise_data:
+                st.write("User:", exercise_data)
+            else:
+                st.error("No Exersise found")
+        else:
+            st.error("Please login first.")      
+ 
+ 
     # Delete Exercise by ID
     st.subheader("Delete Exercise by ID")
-    exercise_id_to_delete = st.number_input("Exercise ID to delete", min_value=1, step=1)
+    exercise_id= st.number_input("Exercise ID to delete", min_value=1, step=1)
     if st.button("Delete Exercise"):
-        delete_exercise_by_id(exercise_id_to_delete)
+        token = get_session_data('authKey')
+        if token:
+            response =delete_exercise_by_id(token, exercise_id)
+            if response.status_code == 204 :
+                st.write("Deleted Exercise Id: ", exercise_id )
+            else:
+                st.error("No Exersise found")
+        else:
+            st.error("Please login first.")
 
-    # Create Workout
-    st.subheader("Create Workout")
-    exercise_id = st.number_input("enter Exercise ID", min_value=1, step=1)
-    user_id = st.number_input("User ID", min_value=1, step=1)
-    if st.button("Create Workout"):
-        create_workout(exercise_id, user_id)
 
-    # Get All Workouts
+    # # Get All Workouts
     st.subheader("Get All Workouts")
     if st.button("Get All Workouts"):
-        get_all_workouts()
+        token = get_session_data('authKey')
+        if token:
+            get_all_workouts(token)
+        else:
+            st.error("Please login first.")
 
     # Get Workout by ID
     st.subheader("Get Workout by ID")
     workout_id = st.number_input("Workout ID", min_value=1, step=1)
     if st.button("Get Workout"):
-        get_workout_by_id(workout_id)
+        token = get_session_data('authKey')
+        if token:
+            workout_data = get_workout_by_id(token, workout_id)
+            if workout_data:
+                st.write("Workout:", workout_data)
+            else:
+                st.error("No Workout found")
+        else:
+            st.error("Please login first.")
+    
 
-    # Update Workout by ID
-    st.subheader("Update Workout by ID")
-    workout_id_to_update = st.number_input("Workout ID to update", min_value=1, step=1)
-    exercise_id_update = st.number_input("Update Exercise ID", min_value=1, step=1)
-    user_id_update = st.number_input("Update User ID", min_value=1, step=1)
-    if st.button("Update Workout"):
-        update_workout_by_id(workout_id_to_update, exercise_id_update, user_id_update)
 
-    # Delete Workout by ID
+       # Delete Workout by ID
     st.subheader("Delete Workout by ID")
-    workout_id_to_delete = st.number_input("Workout ID to delete", min_value=1, step=1)
-    if st.button("Delete Workout"):
-        delete_workout_by_id(workout_id_to_delete)
+    workout_id= st.number_input("Workout ID to delete", min_value=1, step=1)
+    if st.button("Delete workout"):
+        token = get_session_data('authKey')
+        if token:
+            response =delete_workout_by_id(token, workout_id)
+            if response.status_code == 204 :
+                st.write("Deleted Workout Id: ", workout_id )
+            else:
+                st.error("No workout found")
+        else:
+            st.error("Please login first.")
  
  
-       
+    # # Update Workout by ID
+    # st.subheader("Update Workout by ID")
+    # exercise_id = st.number_input("enter Exercise ID", min_value=1, step=1)
+    # user_id = st.number_input("User ID", min_value=1, step=1)
+    # is_set_by_admin:st.selectbox('Choose:', ['True', 'False'])
+    # set_count=st.number_input("set_count", min_value=1, step=1)
+    # repetition_count=st.number_input("repetition count", min_value=1, step=1)
+    # workout_time=st.number_input("workout time", min_value=1, step=1)
+ 
+   
+    # workout_data = {
+    #     "exercise_id": exercise_id,
+    #     "is_set_by_admin": is_set_by_admin,
+    #     "set_count": set_count,
+    #     "repetition_count": repetition_count,
+    #     "workout_time": workout_time
+ 
+    # }
+   
+    # if st.button("Update workout"):
+    #     token = get_session_data('authKey')
+    #     if token:
+    #         exercise_data = update_workout_by_id(token, workout_data, workout_id)
+    #         if workout_data:
+    #             st.write("User:", workout_data)
+    #         else:
+    #             st.error("No workout found")
+    #     else:
+    #         st.error("Please login first.")    
+ 
+ 
+
+    # Create Workout
+    st.subheader("Create Workout")
+    exercise_id = st.number_input("enter Exercise ID", min_value=1, step=1)
+    user_id = st.number_input("Enter User Id ", min_value=1, step=1)
+    # is_set_by_admin:st.selectbox('Chooses:', ["true", "false"])
+    is_set_by_admin = st.checkbox("Is Set by Admin") 
+    # is_set_by_admin:st.text_input(bool)
+    set_count=st.number_input("set_count", min_value=1, step=1)
+    repetition_count=st.number_input("repetition count", min_value=1, step=1)
+    workout_time=st.number_input("workout time", min_value=1, step=1)
+ 
+    workout_data = {
+        "exercise_id": exercise_id,
+        "is_set_by_admin": is_set_by_admin,
+        "set_count": set_count,
+        "repetition_count": repetition_count,
+        "workout_time": workout_time
+ 
+    }
+   
+    if st.button("Create Workout"):
+        if exercise_id and is_set_by_admin and set_count and repetition_count and workout_time:
+            token = get_session_data('authKey')
+            if token:
+                created_workout = create_workout(workout_data, token)
+                st.write(created_workout)
+            else:
+                st.error("Please login first.")
+        else:
+            st.warning("Please fill in all the fields.")
+
+      
  
 # Define a simple SessionState class
 class SessionState:
