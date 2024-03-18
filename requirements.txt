@@ -6,4 +6,3 @@ bcrypt
 matplotlib
 streamlit
 jose
-python_version = "3.12.2"
