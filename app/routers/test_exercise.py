@@ -14,11 +14,11 @@ class TestExerciseEndpoints(unittest.TestCase):
     @patch('app.repository.exercise.create')
     def test_create_exercise(self, mock_create_exercise, mock_verify_token):        # Test creating an exercise.
         # Mock the get_current_user function
-        mock_user = MagicMock(id=1, name="shree", email="shree@gmail.com", role="admin")
+        mock_user = MagicMock(id=1, name="shree", email="shree@gmail.com", role=UserRole.admin)
         mock_verify_token.return_value = mock_user
 
         # Mock the create_exercise function
-        mock_user_data = MagicMock(id=1, name="shree", email="shree@gmail.com", role="admin")
+        mock_user_data = MagicMock(id=1, name="shree", email="shree@gmail.com", role=UserRole.admin)
         mock_user_data.name = "shree"
         mock_exercise_data = MagicMock(id=1, exercise_name="Running", exercise_type=IndoorOutdoorExerciseType.outdoors, measurement_type=MeasurementType.time, 
                                        major_minor_type=MajorMinorExerciseType.mazor, added_by="admin", user=mock_user_data)
@@ -47,11 +47,11 @@ class TestExerciseEndpoints(unittest.TestCase):
     # Test getting all exercises
     def test_get_all_exercises(self, mock_get_all_exercises, mock_verify_token):
         # Mock the get_current_user function
-        mock_user = MagicMock(id=1, name="shree", email="shree@gmail.com", role="admin")
+        mock_user = MagicMock(id=1, name="shree", email="shree@gmail.com", role=UserRole.admin.value)
         mock_verify_token.return_value = mock_user
 
         # Mock the exercise items returned by the database
-        mock_user_data = MagicMock(id=1, name="shree", email="shree@gmail.com", role="admin")
+        mock_user_data = MagicMock(id=1, name="shree", email="shree@gmail.com", role=UserRole.admin.value)
         mock_user_data.name = "shree"
         mock_exercise_items = [
             MagicMock(id=1, exercise_name="Running", exercise_type=IndoorOutdoorExerciseType.outdoors, measurement_type=MeasurementType.time,
@@ -115,7 +115,7 @@ class TestExerciseEndpoints(unittest.TestCase):
     # Test uodating exercise
     def test_update_exercise(self, mock_update_exercise, mock_verify_token):
         # Mock the get_current_user function
-        mock_user = MagicMock(id=1, name="shree", email="shree@gmail.com", role="admin")
+        mock_user = MagicMock(id=1, name="shree", email="shree@gmail.com", role=UserRole.admin)
         mock_verify_token.return_value = mock_user
 
 

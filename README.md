@@ -25,6 +25,19 @@ git clone git@github.com:vijaycogo/Fitness_tracker.git
 
 ```
 
+* Create a virtual environment and install the required dependencies:
+
+```bash
+python -m venv myenv
+```
+
+* Activate the virtual environment:
+
+```bash
+myenv\Scripts\activate
+```
+
+
 * Run the FastAPI server:
 
 ```bash
@@ -32,6 +45,13 @@ uvicorn main:app --port 8000 --reload
 ```
 
 The server will start running at `http://localhost:8000`. You can access the interactive API documentation at `http://localhost:8000/docs`.
+
+* Run the Unit test Cases:
+
+```bash
+python3 -m unittest app.routers.file_name like(python3 -m unittest app.routers.test_exercise, python3 -m unittest app.routers.test_user)
+```
+
 
 ## API Endpoints
 
@@ -60,11 +80,6 @@ The Fitness Project provides the following API endpoints:
 - `PUT /exercises/{exercise_id}/`        : Update information about a specific exercise.
 - `DELETE /exercises/{exercise_id}/`     : Delete a specific exercise
 
-## ROUTES TO IMPLEMENT
-| METHOD |        ROUTE        |    FUNCTIONALITY   |   ACCESS      |
-| -------| ------------------- | -------------------| ------------- |
-| *POST* | ```/auth/signup/``` | _Register new user_|   _All users_ |
-| *POST* | ```/auth/login/```  |    _Login user_    |   _All users_ |
  
 ## How to run the Project
 - Install SQllite, SQLalchemy
@@ -73,11 +88,6 @@ The Fitness Project provides the following API endpoints:
 - Create your virtualenv with `conda create` and activate it.
 - Install the requirements with ``` pip install -r requirements.txt ```
 - Set Up your SQLlite database and set its URI in your ```database.py```
-```
-engine=create_engine('postgresql://postgres:<username>:<password>@localhost/<db_name>',
-    echo=True
-)
-```
  
 - Create your database by running ``` python init_db.py ```
 - Finally run the API

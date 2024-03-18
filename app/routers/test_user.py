@@ -65,7 +65,7 @@ class TestUserEndpoints(unittest.TestCase):
     # test updating a User
     def test_update_user(self, mock_update_user, mock_verify_token):
         # Mock the get_current_user function
-        mock_user = MagicMock(id=1, name="shree", email="shree@gmail.com", role=UserRole.admin)
+        mock_user = MagicMock(id=1, name="shree", email="shree@gmail.com", role=UserRole.customer)
         mock_verify_token.return_value = mock_user
 
         # Mock the update_user function
@@ -92,16 +92,16 @@ class TestUserEndpoints(unittest.TestCase):
     # Test creating a User
     def test_create_user(self, mock_create_user, mock_verify_token):
         # Mock the get_current_user function
-        mock_user = MagicMock(id=1, name="shree", email="shree@gmail.com", role=UserRole.admin)
+        mock_user = MagicMock(id=1, name="shree", email="shree1@gmail.com", role=UserRole.admin)
         mock_verify_token.return_value = mock_user
         # Mock the create_user function
-        mock_user_data = MagicMock(id=1, name="shree", email="shree@gmail.com", role=UserRole.admin)
+        mock_user_data = MagicMock(id=1, name="shree", email="shree4@gmail.com", role=UserRole.admin)
         mock_user_data.name = "shree"
         mock_create_user.return_value = mock_user_data
 
         user_data = {
         "name": "shree",
-        "email": "shree@gmail.com",
+        "email": "shree4@gmail.com",
         "role": "admin",
         "password": "shree" 
     }
